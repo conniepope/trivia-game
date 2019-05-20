@@ -3,17 +3,39 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Trivia</title>
+    <title>Art Trivia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
-    <script src="app.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great|Playball&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 </head>
 <body>
-    <h1>Trivia</h1>
+    <h1>Art Trivia</h1>
+<!--START SCREEN-->
+    <button id="start">Start</button>
 
-    <div class="counter"></div>
+<!--QUESTION SCREEN / TIMER -->
+    <div class="timer"></div>
     <div class="question"></div>
+    <div class="answers">
+        <button type=radio id="a1"></button>
+        <button type=radio id="a2"></button>
+        <button type=radio id="a3"></button>
+        <button type=radio id="a4"></button>
+    </div>
 
+<!--ANSWER SCREEN-->
+    <div class="wrong-or-right"></div>
+    <div class="correct-answer"></div>
+
+<!--SCORING SCREEN-->
+    <div class="how-you-did">Are you an art aficionado?</div>
+    <div class="correct-answer-score"></div>
+    <div class="incorrect-answer-score"></div>
+    <button id="start-over"></button>
+
+    <script src="app.js"></script>
 
 </body>
 </html>
