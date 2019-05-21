@@ -3,40 +3,52 @@ var timer;
 var correctAnswers;
 var incorrectAnswers;
 // questions with answer options (as radio buttons?) with only one being able to be selected
-var questions = {
-    q1: {
+var questions = [
+    {
         q: "This artist is sometimes credited with the inventions of the parachute, helicopter, and tank.",
-        a1: "Salvador Dali",
-        a2: "Pablo Picasso",
-        a3: "Leonardo da Vinci",
-        a4: "Vincent Van Gogh",
+        options: ["Salvador Dali", "Pablo Picasso", "Leonardo da Vinci", "Vincent Van Gogh"],
+        answer: 2
     },
-    q2: {
+    {
         q: "Who painted 'The Persistence of Memory', an urrealistic image of soft, melting pocket watches?"  ,
-        a1: "Rembrandt",
-        a2: "Salvador Dali",
-        a3: "Andy Warhol",
-        a4: "Michelangelo" ,
-    }
-}
+        options: ["Rembrandt", "Salvador Dali", "Andy Warhol", "Michelangelo"],
+        answer: 1
+    },
+];
 
 // START SCREEN
-
-    // show start button
+function reset() {
+// show start button
+    $("#start").show();
+    $("#start-over").hide();
 
     correctAnswers = 0;
     incorrectAnswers = 0;
 
-
-    //once the start button is clicked  
+}
+//once the start button is clicked  
+$("#start").on("click", function() {
+    playGame();
+})
 
 // GAME PLAY
-
+function playGame () {
     // hide start button
-
+    $("#start").hide();
+    $("#start-over").hide();
+    
     // QUESTION SCREEN/TIMER
 
-        // display timer & first question w/answers
+    // display timer & first question w/answers
+    timer = 20;
+    $(".timer").text(timer);
+    $(".question").html(questions[0].q);
+    console.log(questions[0].q)
+    console.log(questions[0].options);
+    for (var i = 0; i < questions[0].options.length; i++) {
+        $(".answers").html(questions[0].options)
+    }
+
 
         // timer will count down from 20 seconds
 
@@ -59,15 +71,19 @@ var questions = {
             // display correct answer
 
     //next question with answer options displays after correct answer is displayed for 5 seconds
-
+} 
     // SCORING SCREEN
-
+function scoring () {
         //display finished text
-        
+        $(".how-you-did").text("Are you an art aficionado?")    
         //display correctAnswers
-
+        $(".correct-answer-score").text(correctAnswers)
         //display incorrectAnswers
-
+        $(".incorrect-answer-score").text(incorrectAnswers)
         //display startOver button
-
+        $("#start-over").show()
         // when startOver button is pressed, go back to the start screen
+        $("#start-over").on("click", function() {
+            reset();
+        });
+    }        
