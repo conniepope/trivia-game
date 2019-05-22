@@ -10,17 +10,17 @@ $(document).ready(function(){
         {
             q: "This artist is sometimes credited with the inventions of the parachute, helicopter, and tank.",
             options: ["Salvador Dali", "Pablo Picasso", "Leonardo da Vinci", "Vincent Van Gogh"],
-            answer: 2
+            answer: "Leonardo da Vinci"
         },
         {
             q: "Who painted 'The Persistence of Memory', an urrealistic image of soft, melting pocket watches?" ,
             options: ["Rembrandt", "Salvador Dali", "Andy Warhol", "Michelangelo"],
-            answer: 1
+            answer: "Salvador Dali"
         },
         {
             q: "This artist is known for co-founding the Cubist movement, the invention of constructed sculpture,the co-invention of collage.",
             options: ["Pablo Picasso", "Leonardo da Vinci", "Claude Monet", "Diego Velazquez"],
-            answer: 0
+            answer: "Pablo Picasso"
         }
     ];
 
@@ -29,6 +29,8 @@ $(document).ready(function(){
     // show start button
         $("#start").show();
         $("#start-over").hide();
+        $("#submit").hide();
+
 
         correctAnswers = 0;
         incorrectAnswers = 0;
@@ -46,6 +48,7 @@ $(document).ready(function(){
         $("#start").hide();
         $("#start-over").hide();
 
+
         // QUESTION SCREEN/TIMER
 
         // display timer & first question w/answers
@@ -61,62 +64,88 @@ $(document).ready(function(){
             timer--;
             //  Display timer
             $(".timer").html(timer);
-            //  Once number reaches zero.
+            //  when timer reaches 0
             if (timer === 0) {
               // stop
               stop();
+              clearInterval(intervalId);
               //  display "time is up.""
-              $(".timer").html("Your time is up!");
+              //   $(".timer").html("Your time is up!");
+              answerScreen();  
             }
         }
 
         //timer starts countdown right away
         startTimer();
-        // for (var i = 0; i < questions.length; i++) {
-            $(".question").html(questions[0].q);
-            console.log(questions[0].q)
+
+        // function nextQuestion() {
+            // for (var j = 0; j < questions.length; i++) {
+
+            $(".question").html(questions[j].q);
+            console.log(questions[j].q)
 
             var answers = $(".answers");
             answers.html('');
-            for (var i = 0; i < questions[0].options.length; i++) {
-                answers.append('<label><input type="radio" name="options" value="' + questions[0].options[i] + '"/> ' + questions[0].options[i] + '</label><br>');
-            //create radio buttons for answers
-            // $(".answers").append("<button> This is a button.</button>")
-
-            // $(".answers").html(answers)
-            console.log(answers)
+            for (var i = 0; i < questions[j].options.length; i++) {
+                answers.append('<label><input type="radio" name="options" value="' + questions[j].options[i] + '"/> ' + questions[j].options[i] + '</label><br>');
+                console.log(answers)
             }
+            $("#submit").show().on("click", function(){
+                answerScreen();
+            })
 
         // }
 
-
-            // timer will count down from 20 seconds
-
-            //when timer reachs 0,
-
         // ANSWER SCREEN
+        function answerScreen() {
+            //stop timer
+            $(".timer").hide();
 
             //compare user answer with correct answer
-            $("input[type=radio][name=answer]:checked" ).val();
-
-
-            //if correct answer,
+            if ( $("input[type=radio][name=options]:checked" ).val() === questions[0].answer) {
+                //if correct answer,
                 correctAnswers++;
-                // display congrats for 5 seconds
-                // and display correct answer,
+                setInterval(correct, 1000)
+            }
+            else if ( $("input[type=radio][name=answer]:checked" ).val() !== questions[0].answer && timer > 0) {
             // if incorrect answer,
                 incorrectAnswers++;
-                //display wrong for 5 seconds
-                // and display correct answer,
-
+                setInterval(incorrect, 1000)
+            }
             // if no answer,
+            else {
                 //display 'time has run out'
-                incorrectAnswers++
-                // display correct answer
+                incorrectAnswers++;
+                setInterval(timesUp, 1000)
+            }
+        }
 
         //next question with answer options displays after correct answer is displayed for 5 seconds
 
         // timer is reset to 20 seconds
+
+        // display correct answer
+
+        function correct() {
+            // display congrats for 5 seconds
+            $(".wrong-or-right").html("You are correct!");
+            // and display correct answer,
+            $(".correct-answer").html("The correct answer is " + questions[0].answer);
+        }
+
+        function incorrect() {
+            //display wrong for 5 seconds
+            $(".wrong-or-right").html("Sorry, that is incorrect!");
+            // and display correct answer,
+            $(".correct-answer").html("The correct answer is " + questions[0].answer);
+        }
+
+        function timesUp() {
+            $(".wrong-or-right").html("Your time is up!");
+            // and display correct answer,
+            $(".correct-answer").html("The correct answer is " + questions[0].answer);
+        }
+
     } 
         // SCORING SCREEN
     function scoring () {
