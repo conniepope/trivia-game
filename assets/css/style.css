@@ -3,7 +3,7 @@ body {
     font-family: 'Playball', cursive;
 };
 
- button #start-over {
-    display: none;
+div .answers {
+    display: block;
 }
 
