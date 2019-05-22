@@ -2,6 +2,7 @@ $(document).ready(function(){
 
     //VARIABLES
     var timer;
+    var intervalId;
     var correctAnswers;
     var incorrectAnswers;
     // questions with answer options (as radio buttons?) with only one being able to be selected
@@ -44,14 +45,33 @@ $(document).ready(function(){
         // hide start button
         $("#start").hide();
         $("#start-over").hide();
-        
+
         // QUESTION SCREEN/TIMER
 
         // display timer & first question w/answers
-        timer = 20;
-        $(".timer").text(timer);
-        //timer starts countdown right away
+        function startTimer() {
+            timer = 20;
+            clearInterval(intervalId);
+            intervalId = setInterval(decrement, 1000);
+        }
+      
+        //  The decrement function.
+        function decrement() {
+            //  Decrease number by one.
+            timer--;
+            //  Display timer
+            $(".timer").html(timer);
+            //  Once number reaches zero.
+            if (timer === 0) {
+              // stop
+              stop();
+              //  display "time is up.""
+              $(".timer").html("Your time is up!");
+            }
+        }
 
+        //timer starts countdown right away
+        startTimer();
         // for (var i = 0; i < questions.length; i++) {
             $(".question").html(questions[0].q);
             console.log(questions[0].q)
