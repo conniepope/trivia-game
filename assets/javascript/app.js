@@ -5,12 +5,17 @@ $(document).ready(function(){
     var intervalId;
     var correctAnswers;
     var incorrectAnswers;
+    var j = 0;
+   
+
+
     // questions with answer options (as radio buttons?) with only one being able to be selected
     var questions = [
         {
             q: "This artist is sometimes credited with the inventions of the parachute, helicopter, and tank.",
             options: ["Salvador Dali", "Pablo Picasso", "Leonardo da Vinci", "Vincent Van Gogh"],
-            answer: "Leonardo da Vinci"
+            answer: "Leonardo da Vinci",
+            // photo: 
         },
         {
             q: "Who painted 'The Persistence of Memory', an urrealistic image of soft, melting pocket watches?" ,
@@ -21,8 +26,15 @@ $(document).ready(function(){
             q: "This artist is known for co-founding the Cubist movement, the invention of constructed sculpture,the co-invention of collage.",
             options: ["Pablo Picasso", "Leonardo da Vinci", "Claude Monet", "Diego Velazquez"],
             answer: "Pablo Picasso"
-        }
-    ];
+        },
+        {    q: "After poor health confined this artist to a wheelchair, he gradually transitioned from painting on canvas to 'painting with scissors'. Who was it?",
+            options: ["Jackson Pollock", "Edgar Degas", "Henry Matisse", "Auguste Rodin"],
+            answer: "Henry Matisse"
+        },
+];
+    // for loop around whole thing from here to complete bottom????
+    // for (var j = 0; j < questions.length; j++) { 
+
 
     // START SCREEN
     function reset() {
@@ -30,7 +42,6 @@ $(document).ready(function(){
         $("#start").show();
         $("#start-over").hide();
         $("#submit").hide();
-
 
         correctAnswers = 0;
         incorrectAnswers = 0;
@@ -48,10 +59,10 @@ $(document).ready(function(){
         $("#start").hide();
         $("#start-over").hide();
 
-
         // QUESTION SCREEN/TIMER
 
-        // display timer & first question w/answers
+        // timer is reset to 20 seconds
+
         function startTimer() {
             timer = 20;
             clearInterval(intervalId);
@@ -63,7 +74,7 @@ $(document).ready(function(){
             //  Decrease number by one.
             timer--;
             //  Display timer
-            $(".timer").html(timer);
+            $(".timer").html("Time remaining: " + timer);
             //  when timer reaches 0
             if (timer === 0) {
               // stop
@@ -76,10 +87,14 @@ $(document).ready(function(){
         }
 
         //timer starts countdown right away
-        startTimer();
+        nextQuestion();
 
-        // function nextQuestion() {
-            // for (var j = 0; j < questions.length; i++) {
+        function nextQuestion() {
+
+            $(".question").empty()
+            startTimer();
+
+            // for (var j = 0; j < questions.length; j++) {
 
             $(".question").html(questions[j].q);
             console.log(questions[j].q)
@@ -94,59 +109,63 @@ $(document).ready(function(){
                 answerScreen();
             })
 
-        // }
+        }
 
         // ANSWER SCREEN
         function answerScreen() {
             //stop timer
             $(".timer").hide();
+            $("#submit").hide();
 
             //compare user answer with correct answer
-            if ( $("input[type=radio][name=options]:checked" ).val() === questions[0].answer) {
+            if ( $("input[type=radio][name=options]:checked" ).val() === questions[j].answer) {
                 //if correct answer,
                 correctAnswers++;
-                setInterval(correct, 1000)
+                // display congrats for 5 seconds
+                $(".wrong-or-right").html("You are correct!");
+                // and display correct answer,
+                correctAnswer();
             }
-            else if ( $("input[type=radio][name=answer]:checked" ).val() !== questions[0].answer && timer > 0) {
+            else if ( $("input[type=radio][name=answer]:checked" ).val() !== questions[j].answer && timer > 0) {
             // if incorrect answer,
                 incorrectAnswers++;
-                setInterval(incorrect, 1000)
+                //display wrong for 5 seconds
+                $(".wrong-or-right").html("Sorry, that is incorrect!");
+                // and display correct answer,
+                correctAnswer();
             }
             // if no answer,
             else {
                 //display 'time has run out'
                 incorrectAnswers++;
-                setInterval(timesUp, 1000)
+                $(".wrong-or-right").html("Your time is up!");
+                // and display correct answer,
+                correctAnswer();
             }
         }
 
-        //next question with answer options displays after correct answer is displayed for 5 seconds
+        //next question with answer options displays after correct answer is displayed for 3 seconds
+        // go to nextQuestion(), except change questions[0] to questions[0] + 1 .
 
-        // timer is reset to 20 seconds
-
-        // display correct answer
-
-        function correct() {
-            // display congrats for 5 seconds
-            $(".wrong-or-right").html("You are correct!");
-            // and display correct answer,
-            $(".correct-answer").html("The correct answer is " + questions[0].answer);
-        }
-
-        function incorrect() {
-            //display wrong for 5 seconds
-            $(".wrong-or-right").html("Sorry, that is incorrect!");
-            // and display correct answer,
-            $(".correct-answer").html("The correct answer is " + questions[0].answer);
-        }
-
-        function timesUp() {
-            $(".wrong-or-right").html("Your time is up!");
-            // and display correct answer,
-            $(".correct-answer").html("The correct answer is " + questions[0].answer);
-        }
-
+        function correctAnswer() {
+            $(".correct-answer").html("The correct answer is " + questions[j].answer);
+            // display corresponding photo
+            j++;
+            // if (j === questions.length -1) {
+            //     $(".question").empty();
+            //     scoring();
+            // }
+            // for (var j = 0; j < questions.length; j++){
+            (nextQuestion(), 3000)
+            // }
+        }       
     } 
+    //Wait 5 seconds after displaying correct answer,
+    //then clear question
+    //reset timer     
+    //display next question     questions[j] = questions [j + 1];     ???????????????
+
+
         // SCORING SCREEN
     function scoring () {
             //display finished text
