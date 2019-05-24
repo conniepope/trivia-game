@@ -65,8 +65,17 @@ $(document).ready(function(){
         $("#start").show();
         $("#start-over").hide();
         $("#submit").hide();
+        $(".how-you-did").empty();
+        $(".correct-answer-score").empty();
+        $(".incorrect-answer-score").empty();
+        $(".wrong-or-right").empty();
+        $(".correct-answer").empty();
+        $(".timer").hide();
+
         correctAnswers = 0;
         incorrectAnswers = 0;
+        j = 0;
+        console.log("reset " + j)
         console.log ("this is working");
         //once the start button is clicked  
         $("#start").on("click", function() {
@@ -120,13 +129,14 @@ $(document).ready(function(){
             startTimer();;
 
             $(".question").html(questions[j].q);
-            console.log(questions[j].q)
+            console.log(questions[j].q) 
+            console.log("nextquestion " + j)
 
             var answers = $(".answers");
             answers.html('');
             for (var i = 0; i < questions[j].options.length; i++) {
                 answers.append('<label><input type="radio" name="options" value="' + questions[j].options[i] + '"/> ' + questions[j].options[i] + '</label><br>');
-                console.log(answers)
+                console.log(answers + "answers " + j)
             }
             $("#submit").show().on("click", function(){
                 answerScreen();
@@ -144,6 +154,7 @@ $(document).ready(function(){
             if ( $("input[type=radio][name=options]:checked" ).val() === questions[j].answer) {
                 //if correct answer,
                 correctAnswers++;
+                console.log(correctAnswers)
                 // display congrats for 5 seconds
                 $(".wrong-or-right").html("You are correct!");
                 // and display correct answer,
@@ -152,10 +163,12 @@ $(document).ready(function(){
             else if ( $("input[type=radio][name=answer]:checked" ).val() !== questions[j].answer && timer > 0) {
             // if incorrect answer,
                 incorrectAnswers++;
+                console.log(incorrectAnswers)
                 //display wrong for 5 seconds
                 $(".wrong-or-right").html("Sorry, that is incorrect!");
                 // and display correct answer,
                 correctAnswer();
+                console.log("incorrect answers condition" + questions[j].answer)
             }
             // if no answer,
             else {
@@ -165,22 +178,23 @@ $(document).ready(function(){
                 // and display correct answer,
                 correctAnswer();
             }
+            console.log("answerScreen " + questions[j].answer)
         }
 
         //next question with answer options displays after correct answer is displayed for 3 seconds
-        // go to nextQuestion(), except change questions[0] to questions[0] + 1 .
 
         function correctAnswer() {
             $(".correct-answer").html("The correct answer is " + questions[j].answer);
             // display corresponding photo
+            console.log("correctAnswer " + questions[j].answer)
             j++;
+            console.log("j++ " + j++)
 
+            if (j === questions.length -1) {
 
-            // if (j === questions.length -1) {
-            //     $(".question").empty();
-            //     scoring();
-            // }
-             setTimeout(nextQuestion(), 3000);
+                scoring();
+            }
+            nextQuestion()
 
             
         }       
@@ -196,9 +210,9 @@ $(document).ready(function(){
             //display finished text
             $(".how-you-did").text("Are you an art aficionado?")    
             //display correctAnswers
-            $(".correct-answer-score").text(correctAnswers)
+            $(".correct-answer-score").text("Correct Answers: " + correctAnswers)
             //display incorrectAnswers
-            $(".incorrect-answer-score").text(incorrectAnswers)
+            $(".incorrect-answer-score").text("Incorrect Answers: " + incorrectAnswers)
             //display startOver button
             $("#start-over").show()
             // when startOver button is pressed, go back to the start screen

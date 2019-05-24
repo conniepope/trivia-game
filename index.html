@@ -12,26 +12,29 @@
 </head>
 <body>
     <h1>Art Trivia</h1>
-<!--START SCREEN-->
-    <div class="start-screen">
-    <button id="start">Start</button>
+
+    <div class="container">
+    <!--START SCREEN-->
+        <div class="start-screen">
+        <button id="start">Start</button>
+
+    <!--QUESTION SCREEN / TIMER -->
+            <div class="timer"></div>
+            <div class="question"></div>
+            <div class="answers"></div>
+        <button id="submit">Submit</button>
+
+    <!--ANSWER SCREEN-->
+        <div class="wrong-or-right"></div>
+        <div class="correct-answer"></div>
+
+    <!--SCORING SCREEN-->
+            <div class="how-you-did"></div>
+            <div class="correct-answer-score"></div>
+            <div class="incorrect-answer-score"></div>
+        <button id="start-over">Start Over?</button>
+
     </div>
-
-<!--QUESTION SCREEN / TIMER -->
-    <div class="timer"></div>
-    <div class="question"></div>
-    <div class="answers"></div>
-    <button id="submit">Submit</button>
-
-<!--ANSWER SCREEN-->
-    <div class="wrong-or-right"></div>
-    <div class="correct-answer"></div>
-
-<!--SCORING SCREEN-->
-    <div class="how-you-did"></div>
-    <div class="correct-answer-score"></div>
-    <div class="incorrect-answer-score"></div>
-    <button id="start-over">Start Over?</button>
 
     <script src="assets/javascript/app.js"></script>
 

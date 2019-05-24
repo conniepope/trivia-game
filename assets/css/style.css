@@ -1,9 +1,35 @@
 body {
     /* font-family: 'Fredericka the Great', cursive; */
     font-family: 'Playball', cursive;
+    background-image: url("images/famous-artwork.jpg");
+    color: white;
+    padding: 20px;
 };
 
 div .answers {
     display: block;
+}
+
+.container {
+    background-color: rgb(108, 129, 236);
+    color: black; 
+    border: 2px ridge rgb(37, 4, 37);
+    padding: 10px;
+}
+
+div {
+    font-size: 1.2em;
+}
+    
+h1 {
+    font-size: 4em;
+}
+
+button {
+    padding: 20px;
+    font-size: 1.2em;
+    font-family: 'Playball', cursive;
+    border: 5px groove black;
+
 }
 
