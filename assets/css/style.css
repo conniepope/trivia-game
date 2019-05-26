@@ -11,10 +11,12 @@ div .answers {
 }
 
 .container {
-    background-color: rgb(108, 129, 236);
+    background-color: rgba(127, 146, 241, 0.8);
     color: black; 
-    border: 2px ridge rgb(37, 4, 37);
+    border: 2px groove rgb(37, 4, 37);
+    border-radius: 10px;
     padding: 10px;
+    text-align: center;
 }
 
 div {
@@ -22,14 +24,18 @@ div {
 }
     
 h1 {
-    font-size: 4em;
+    font-size: 5em;
+    text-align: center
 }
 
-button {
-    padding: 20px;
+#start, #start-over{
+    padding: 5px 10px;
     font-size: 1.2em;
     font-family: 'Playball', cursive;
-    border: 5px groove black;
-
+    border: 2px groove black;
+}
+#option-buttons {
+    border: 2px groove black;
+    margin: 2px;
 }
 

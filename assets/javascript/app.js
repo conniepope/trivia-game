@@ -1,228 +1,192 @@
 $(document).ready(function(){
+  
+  // event listeners
+  $('#start-over').hide();
 
-    //VARIABLES
-    var timer;
-    var intervalId;
-    var correctAnswers = 0;
-    var incorrectAnswers = 0;
-    var j = 0;
-    console.log(correctAnswers);
-    console.log(incorrectAnswers);
+  $("#start").on('click', trivia.startGame);
+  $("#start-over").on('click', trivia.startGame);
+  $(document).on('click' , '.option', trivia.guessChecker);
+  
+})
 
+var trivia = {
+  // trivia properties
+  correct: 0,
+  incorrect: 0,
+  unanswered: 0,
+  currentSet: 0,
+  timer: 20,
+  timerOn: false,
+  timerId : '',
+  // questions options and answers data
+  questions: {
+    q1: "This artist is sometimes credited with the inventions of the parachute, helicopter, and tank.",
+    q2: "Who painted 'The Persistence of Memory', an urrealistic image of soft, melting pocket watches?",
+    q3: "This artist is known for co-founding the Cubist movement, the invention of constructed sculpture,the co-invention of collage.",
+    q4: "After poor health confined this artist to a wheelchair, he gradually transitioned from painting on canvas to 'painting with scissors'. Who was it?",
+    q5: "This artist's most famous paintings include 'The Starry Night' and 'Irises'.",
+    q6: "This artist was born and raised in Pittsburgh, Pennsylvania.",
+    q7: "An Italian scultptor of the Renaissance.",
+    q8: "This Florentine painter is most know for his pictures of the Madonna and Child, and his life-size mythological paintings, such as 'Venus and Mars'.",
+    q9: "The leading French Impressionist landscape painter.",
+    q10: "Painter of the Sistine Chapel ceiling",
+  },
+  options: {
+    q1: ["Salvador Dali", "Pablo Picasso", "Leonardo da Vinci", "Vincent Van Gogh"],
+    q2: ["Rembrandt", "Salvador Dali", "Andy Warhol", "Michelangelo"],
+    q3: ["Pablo Picasso", "Leonardo da Vinci", "Claude Monet", "Diego Velazquez"],
+    q4: ["Jackson Pollock", "Edgar Degas", "Henry Matisse", "Auguste Rodin"],
+    q5: ["Vincent van Gogh", "Paul Gauguin", "Leonardo da Vinci", "Rembrandt"],
+    q6: ["Paul Cezanne", "Peter Paul Rubens", "Salvador Dali", "Andy Warhol"],
+    q7: ["Michelangelo", "Donatello", "Raphael", "Leonardo da Vinci"],
+    q8: ["Sandro Botticelli", "Paul Cezanne", "Claude Monet", "Giovanni Bellini"],
+    q9: ["Pablo Picasso", "Edgar Degas", "Paul Cezanne", "Claude Monet"],
+    q10: ["Raphael", "Bartolomeo Caporali", "Michelangelo", "Giovanni Bellini"],
+  },
+  answers: {
+    q1: "Leonardo da Vinci",
+    q2: "Salvador Dali",
+    q3: "Pablo Picasso",
+    q4: "Henry Matisse",
+    q5: "Vincent van Gogh",
+    q6: "Andy Warhol",
+    q7: "Donatello",
+    q8: "Sandro Botticelli",
+    q9: "Claude Monet",
+    q10: "Michelangelo",
+  },
+  // trivia methods
+  // method to initialize game
+  startGame: function(){
+    // restarting game results
+    trivia.currentSet = 0;
+    trivia.correct = 0;
+    trivia.incorrect = 0;
+    trivia.unanswered = 0;
+    clearInterval(trivia.timerId);
+    $('#start-over').hide();
 
-    // questions with answer options (as radio buttons?) with only one being able to be selected
-    var questions = [
-        {    q: "This artist is sometimes credited with the inventions of the parachute, helicopter, and tank.",
-            options: ["Salvador Dali", "Pablo Picasso", "Leonardo da Vinci", "Vincent Van Gogh"],
-            answer: "Leonardo da Vinci",
-            // photo: 
-        },
-        {    q: "Who painted 'The Persistence of Memory', an urrealistic image of soft, melting pocket watches?" ,
-            options: ["Rembrandt", "Salvador Dali", "Andy Warhol", "Michelangelo"],
-            answer: "Salvador Dali"
-        },
-        {    q: "This artist is known for co-founding the Cubist movement, the invention of constructed sculpture,the co-invention of collage.",
-            options: ["Pablo Picasso", "Leonardo da Vinci", "Claude Monet", "Diego Velazquez"],
-            answer: "Pablo Picasso"
-        },
-        {    q: "After poor health confined this artist to a wheelchair, he gradually transitioned from painting on canvas to 'painting with scissors'. Who was it?",
-            options: ["Jackson Pollock", "Edgar Degas", "Henry Matisse", "Auguste Rodin"],
-            answer: "Henry Matisse"
-        },
-        {   q: "This artist's most famous paintings include 'The Starry Night' and 'Irises'.",
-            options: ["Vincent van Gogh", "Paul Gauguin", "Leonardo da Vinci", "Rembrandt"],
-            answer: "Vincent van Gogh"
-        },
-        {   q: "This artist was born and raised in Pittsburgh, Pennsylvania.",
-            options: ["Paul Cezanne", "Peter Paul Rubens", "Salvador Dali", "Andy Warhol"],
-            answer: "Andy Warhol"
-        },
-        {   q: "An Italian scultptor of the Renaissance.",
-            options: ["Michelangelo", "Donatello", "Raphael", "Leonardo da Vinci"],
-            answer: "Donatello"
-        },
-        {   q: "This Florentine painter is most know for his pictures of the Madonna and Child, and his life-size mythological paintings, such as 'Venus and Mars'.",
-            options: ["Sandro Botticelli", "Paul Cezanne", "Claude Monet", "Giovanni Bellini"],
-            answer: "Sandro Botticelli"
-        },
-        {   q: "The leading French Impressionist landscape painter.",
-            options: ["Pablo Picasso", "Edgar Degas", "Paul Cezanne", "Claude Monet"],
-            answer: "Claude Monet"
-        },
-        {   q: "Painter of the Sistine Chapel ceiling",
-            options: ["Raphael", "Bartolomeo Caporali", "Michelangelo", "Giovanni Bellini"],
-            answer: "Michelangelo"
-        }
-    ];
+    // show game section
+    $('#game').show();
+    
+    //  empty last results
+    $('#results').html('');
+    
+  
+    
+    // remove start button
+    $('#start').hide();
 
-    // for loop around whole thing from here to complete bottom????
-    // for (var j = 0; j < questions.length; j++) { 
-
-
-    // START SCREEN
-    function reset() {
-    // show start button
-        $("#start").show();
-        $("#start-over").hide();
-        $("#submit").hide();
-        $(".how-you-did").empty();
-        $(".correct-answer-score").empty();
-        $(".incorrect-answer-score").empty();
-        $(".wrong-or-right").empty();
-        $(".correct-answer").empty();
-        $(".timer").hide();
-
-        correctAnswers = 0;
-        incorrectAnswers = 0;
-        j = 0;
-        console.log("reset " + j)
-        console.log ("this is working");
-        //once the start button is clicked  
-        $("#start").on("click", function() {
-            playGame();
-        })
+    $('#remaining-time').show();
+      // show timer
+      $('#timer').html("Remaining Time: " + trivia.timer);
+    
+    // ask first question
+    trivia.nextQuestion();
+    
+  },
+  // method to loop through and display questions and options 
+  nextQuestion : function(){
+    
+    // set timer to 20 seconds each question
+    trivia.timer = 10;
+    $('#timer').text("Remaining Time: " + trivia.timer);
+    
+    // to prevent timer speed up
+    if(!trivia.timerOn){
+      trivia.timerId = setInterval(trivia.timerRunning, 1000);
     }
+    
+    // gets all the questions then indexes the current questions
+    var questionContent = Object.values(trivia.questions)[trivia.currentSet];
+    $('#question').text(questionContent);
+    
+    // an array of all the user options for the current question
+    var questionOptions = Object.values(trivia.options)[trivia.currentSet];
+    
+    // creates all the trivia guess options in the html
+    $.each(questionOptions, function(index, key){
+      $('#options').append($('<button class="option btn btn-light btn-lg" id="option-buttons">'+key+'</button>'));
+    })
+    
+  },
+  // method to decrement counter and count unanswered if timer runs out
+  timerRunning : function(){
+    // if timer still has time left and there are still questions left to ask
+    if(trivia.timer > -1 && trivia.currentSet < Object.keys(trivia.questions).length){
+      $('#timer').text("Remaining Time: " + trivia.timer);
+      trivia.timer--;
+    }
+    // the time has run out and increment unanswered, run result
+    else if(trivia.timer === -1){
+      trivia.unanswered++;
+      trivia.result = false;
+      clearInterval(trivia.timerId);
+      resultId = setTimeout(trivia.guessResult, 1000);
+      $('#results').html('<h3>Time\'s up!  The answer was '+ Object.values(trivia.answers)[trivia.currentSet] +'</h3>');
+    }
+    // if all the questions have been shown end the game, show results
+    else if(trivia.currentSet === Object.keys(trivia.questions).length){
+    
+      // hide game sction
+      $('#game').hide();
+      // adds results of game (correct, incorrect, unanswered) to the page
 
+      $('#results').html('<h3>Are you an art aficionado?</h3>'+
+        '<p>Correct: '+ trivia.correct +'</p>'+
+        '<p>Incorrect: '+ trivia.incorrect +'</p>'+
+        '<p>Unaswered: '+ trivia.unanswered +'</p>');
+        $('#results').show();
 
-    // GAME PLAY
-    function playGame () {
-
-        // hide start button
-        $("#start").hide();
-        $("#start-over").hide();
-
-        // QUESTION SCREEN/TIMER
-        
-        // timer is reset to 20 seconds
-        function startTimer() {
-            timer = 20;
-            //  Display timer
-            $(".timer").show()
-            $(".timer").html("Time remaining: " + timer);
-            clearInterval(intervalId);
-            intervalId = setInterval(decrement, 1000);
-        }
+      // show start button to begin a new game
+      $('#start-over').show();
+    }
+    
+  },
+  // method to evaluate the option clicked
+  guessChecker : function() {
+    
+    // timer ID for gameResult setTimeout
+    var resultId;
+    
+    // the answer to the current question being asked
+    var currentAnswer = Object.values(trivia.answers)[trivia.currentSet];
+    
+    // if the text of the option picked matches the answer of the current question, increment correct
+    if($(this).text() === currentAnswer){
+      // turn button green for correct
+      $(this).addClass('btn-success').removeClass('btn-info');
       
-        //  The decrement function.
-        function decrement() {
-            //  Decrease number by one.
-            timer--;
-            //  Display timer
-            $(".timer").html("Time remaining: " + timer);
-            //  when timer reaches 0
-            if (timer === 0) {
-              // stop
-              stop();
-              clearInterval(intervalId);
-              //  display "time is up.""
-              answerScreen();  
-            }
-        }
-
-        //timer starts countdown right away
-        nextQuestion();
+      trivia.correct++;
+      clearInterval(trivia.timerId);
+      resultId = setTimeout(trivia.guessResult, 3000);
+      $('#results').html('<h3>Your are correct!</h3>');
+    }
+    // else the user picked the wrong option, increment incorrect
+    else{
+      // turn button clicked red for incorrect
+      $(this).addClass('btn-danger').removeClass('btn-info');
+      
+      trivia.incorrect++;
+      clearInterval(trivia.timerId);
+      resultId = setTimeout(trivia.guessResult, 3000);
+      $('#results').html('<h3>Sorry that is incorrect! '+ currentAnswer +'</h3>');
+    }
     
-        function nextQuestion() {
-
-            $(".question").empty();
-            $(".answers").empty();
-            startTimer();;
-
-            $(".question").html(questions[j].q);
-            console.log(questions[j].q) 
-            console.log("nextquestion " + j)
-
-            var answers = $(".answers");
-            answers.html('');
-            for (var i = 0; i < questions[j].options.length; i++) {
-                answers.append('<label><input type="radio" name="options" value="' + questions[j].options[i] + '"/> ' + questions[j].options[i] + '</label><br>');
-                console.log(answers + "answers " + j)
-            }
-            $("#submit").show().on("click", function(){
-                answerScreen();
-            })
-
-        }
-
-        // ANSWER SCREEN
-        function answerScreen() {
-            //stop timer
-            $(".timer").hide();
-            $("#submit").hide();
-
-            //compare user answer with correct answer
-            if ( $("input[type=radio][name=options]:checked" ).val() === questions[j].answer) {
-                //if correct answer,
-                correctAnswers++;
-                console.log(correctAnswers)
-                // display congrats for 5 seconds
-                $(".wrong-or-right").html("You are correct!");
-                // and display correct answer,
-                correctAnswer();
-            }
-            else if ( $("input[type=radio][name=answer]:checked" ).val() !== questions[j].answer && timer > 0) {
-            // if incorrect answer,
-                incorrectAnswers++;
-                console.log(incorrectAnswers)
-                //display wrong for 5 seconds
-                $(".wrong-or-right").html("Sorry, that is incorrect!");
-                // and display correct answer,
-                correctAnswer();
-                console.log("incorrect answers condition" + questions[j].answer)
-            }
-            // if no answer,
-            else {
-                //display 'time has run out'
-                incorrectAnswers++;
-                $(".wrong-or-right").html("Your time is up!");
-                // and display correct answer,
-                correctAnswer();
-            }
-            console.log("answerScreen " + questions[j].answer)
-        }
-
-        //next question with answer options displays after correct answer is displayed for 3 seconds
-
-        function correctAnswer() {
-            $(".correct-answer").html("The correct answer is " + questions[j].answer);
-            // display corresponding photo
-            console.log("correctAnswer " + questions[j].answer)
-            j++;
-            console.log("j++ " + j++)
-
-            if (j === questions.length -1) {
-
-                scoring();
-            }
-            nextQuestion()
-
-            
-        }       
-    } 
-    //Wait 5 seconds after displaying correct answer,
-    //then clear question
-    //reset timer     
-    //display next question     questions[j] = questions [j + 1];     ???????????????
-
-
-        // SCORING SCREEN
-    function scoring () {
-            //display finished text
-            $(".how-you-did").text("Are you an art aficionado?")    
-            //display correctAnswers
-            $(".correct-answer-score").text("Correct Answers: " + correctAnswers)
-            //display incorrectAnswers
-            $(".incorrect-answer-score").text("Incorrect Answers: " + incorrectAnswers)
-            //display startOver button
-            $("#start-over").show()
-            // when startOver button is pressed, go back to the start screen
-            $("#start-over").on("click", function() {
-                reset();
-            });
-    };
-
-    reset() 
-
-
-})  
+  },
+  // method to remove previous question results and options
+  guessResult : function(){
     
+    // increment to next question set
+    trivia.currentSet++;
+    
+    // remove the options and results
+    $('.option').remove();
+    $('#results h3').remove();
+    
+    // begin next question
+    trivia.nextQuestion();
+     
+  }
+
+}
