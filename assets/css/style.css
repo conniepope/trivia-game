@@ -1,5 +1,4 @@
 body {
-    /* font-family: 'Fredericka the Great', cursive; */
     font-family: 'Playball', cursive;
     background-image: url("images/famous-artwork.jpg");
     color: white;
@@ -25,7 +24,8 @@ div {
     
 h1 {
     font-size: 5em;
-    text-align: center
+    text-align: center;
+    text-shadow: 2px 2px 2px black;
 }
 
 #start, #start-over{

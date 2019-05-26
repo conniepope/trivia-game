@@ -1,8 +1,8 @@
 $(document).ready(function(){
   
-  // event listeners
   $('#start-over').hide();
 
+  // event listeners
   $("#start").on('click', trivia.startGame);
   $("#start-over").on('click', trivia.startGame);
   $(document).on('click' , '.option', trivia.guessChecker);
@@ -10,7 +10,7 @@ $(document).ready(function(){
 })
 
 var trivia = {
-  // trivia properties
+  //variables set up as keys
   correct: 0,
   incorrect: 0,
   unanswered: 0,
@@ -18,7 +18,8 @@ var trivia = {
   timer: 20,
   timerOn: false,
   timerId : '',
-  // questions options and answers data
+
+  // questions, options and answers 
   questions: {
     q1: "This artist is sometimes credited with the inventions of the parachute, helicopter, and tank.",
     q2: "Who painted 'The Persistence of Memory', an urrealistic image of soft, melting pocket watches?",
@@ -55,31 +56,24 @@ var trivia = {
     q9: "Claude Monet",
     q10: "Michelangelo",
   },
+
   // trivia methods
-  // method to initialize game
+  // method to start game
   startGame: function(){
-    // restarting game results
+    // game restart
     trivia.currentSet = 0;
     trivia.correct = 0;
     trivia.incorrect = 0;
     trivia.unanswered = 0;
     clearInterval(trivia.timerId);
-    $('#start-over').hide();
 
-    // show game section
+    $('#start-over').hide();
     $('#game').show();
-    
+    $('#start').hide();
+    $('#remaining-time').show();
+    $('#timer').html("Remaining Time: " + trivia.timer);
     //  empty last results
     $('#results').html('');
-    
-  
-    
-    // remove start button
-    $('#start').hide();
-
-    $('#remaining-time').show();
-      // show timer
-      $('#timer').html("Remaining Time: " + trivia.timer);
     
     // ask first question
     trivia.nextQuestion();
@@ -88,7 +82,7 @@ var trivia = {
   // method to loop through and display questions and options 
   nextQuestion : function(){
     
-    // set timer to 20 seconds each question
+    // set timer to 10 seconds each question
     trivia.timer = 10;
     $('#timer').text("Remaining Time: " + trivia.timer);
     
@@ -125,13 +119,13 @@ var trivia = {
       resultId = setTimeout(trivia.guessResult, 1000);
       $('#results').html('<h3>Time\'s up!  The answer was '+ Object.values(trivia.answers)[trivia.currentSet] +'</h3>');
     }
-    // if all the questions have been shown end the game, show results
+    // if all the questions have been shown, show results
     else if(trivia.currentSet === Object.keys(trivia.questions).length){
     
-      // hide game sction
+      // hide game 
       $('#game').hide();
-      // adds results of game (correct, incorrect, unanswered) to the page
 
+      // adds results of game (correct, incorrect, unanswered) to the page
       $('#results').html('<h3>Are you an art aficionado?</h3>'+
         '<p>Correct: '+ trivia.correct +'</p>'+
         '<p>Incorrect: '+ trivia.incorrect +'</p>'+
@@ -146,8 +140,6 @@ var trivia = {
   // method to evaluate the option clicked
   guessChecker : function() {
     
-    // timer ID for gameResult setTimeout
-    var resultId;
     
     // the answer to the current question being asked
     var currentAnswer = Object.values(trivia.answers)[trivia.currentSet];
