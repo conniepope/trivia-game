@@ -15,7 +15,7 @@ var trivia = {
   incorrect: 0,
   unanswered: 0,
   currentSet: 0,
-  timer: 20,
+  timer: 10,
   timerOn: false,
   timerId : '',
 
@@ -140,7 +140,6 @@ var trivia = {
   // method to evaluate the option clicked
   guessChecker : function() {
     
-    
     // the answer to the current question being asked
     var currentAnswer = Object.values(trivia.answers)[trivia.currentSet];
     
@@ -156,7 +155,7 @@ var trivia = {
     }
     // else the user picked the wrong option, increment incorrect
     else{
-      // turn button clicked red for incorrect
+      // turn button red for incorrect
       $(this).addClass('btn-danger').removeClass('btn-info');
       
       trivia.incorrect++;
