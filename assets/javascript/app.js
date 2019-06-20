@@ -150,7 +150,7 @@ var trivia = {
       
       trivia.correct++;
       clearInterval(trivia.timerId);
-      resultId = setTimeout(trivia.guessResult, 3000);
+      resultId = setTimeout(trivia.guessResult, 2000);
       $('#results').html('<h3>Your are correct!</h3>');
     }
     // else the user picked the wrong option, increment incorrect
@@ -160,8 +160,8 @@ var trivia = {
       
       trivia.incorrect++;
       clearInterval(trivia.timerId);
-      resultId = setTimeout(trivia.guessResult, 3000);
-      $('#results').html('<h3>Sorry that is incorrect! '+ currentAnswer +'</h3>');
+      resultId = setTimeout(trivia.guessResult, 2000);
+      $('#results').html('<h3>Sorry that is incorrect! The correct answer is '+ currentAnswer +'</h3>');
     }
     
   },
