@@ -11,5 +11,6 @@ Technologies Used:
 HTML5,
 CSS,
 Javascript,
+jQuery,
 Photoshop,
 timers
