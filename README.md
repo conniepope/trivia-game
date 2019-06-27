@@ -1,4 +1,4 @@
-# trivia-game
+# Art Trivia Game
 
 This trivia game is based on famous artists.
 Answer 10 trivia questions in the allotted amount of time to see if you are an Art Aficionado.
